@@ -9,6 +9,9 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const router = express.Router({ mergeParams: true });
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
@@ -19,6 +22,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+
+const sessionOption = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
+};
 
 app.listen(8080, () => {
   console.log("app is listening to port 8080");
@@ -39,10 +53,19 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
+// app.use(session(sessionOption));
+// app.use(flash());
+
 app.get("/", (req, res, next) => {
-  next(new ExpressError(404, "Page not found!"));
-  // res.send("Hi, I am root.");
+  // next(new ExpressError(404, "Page not found!"));
+  res.send("Hi, I am root.");
+  console.log(req.session);
 });
+
+// app.use((req, res, next) => {
+//   res.locals.success = req.flash("success");
+//   next();
+// });
 
 app.use("/", listings);
 app.use("/listings/:id/reviews", reviews);
