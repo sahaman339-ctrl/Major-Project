@@ -12,8 +12,8 @@
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
           <input
-            type="listing[text]"
-            name="title"
+            type="text"
+            name="listing[title]"
             id=""
             value="<%= listing.title %>"
             class="form-control"
@@ -24,8 +24,7 @@
         <div class="mb-3">
           <label for="description" class="form-label">Description</label>
           <textarea
-            type="listing[text]"
-            name="description"
+            name="listing[description]"
             id=""
             class="form-control"
             required
@@ -39,7 +38,7 @@
           <label class="image">Image</label>
           <input
             type="text"
-            name="image[url]"
+            name="listing[image][url]"
             placeholder="enter image URL"
             class="form-control"
             value="<%= listing.image.url %>"
@@ -51,8 +50,8 @@
         <div class="mb-3">
           <label for="price" class="form-label">Price</label>
           <input
-            type="listing[number]"
-            name="price"
+            type="number"
+            name="listing[price]"
             id=""
             value="<%= listing.price %>"
             class="form-control"
@@ -63,8 +62,8 @@
         <div class="mb-3">
           <label for="location" class="form-label">Location</label>
           <input
-            type="listing[text]"
-            name="location"
+            type="text"
+            name="listing[location]"
             id=""
             value="<%= listing.location %>"
             class="form-control"
@@ -75,8 +74,8 @@
         <div class="mb-3">
           <label for="country" class="form-label">Country</label>
           <input
-            type="listing[text]"
-            name="country"
+            type="text"
+            name="listing[country]"
             id=""
             value="<%= listing.country %>"
             class="form-control"

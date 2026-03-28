@@ -13,8 +13,8 @@
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
           <input
-            type="listing[text]"
-            name="title"
+            type="text"
+            name="listing[title]"
             id=""
             placeholder="Add a catchy title"
             class="form-control"
@@ -26,8 +26,7 @@
           <label for="description" class="form-label">Description</label>
 
           <textarea
-            type="listing[textarea]"
-            name="description"
+            name="listing[description]"
             id=""
             class="form-control"
             required
@@ -39,7 +38,7 @@
           <label class="form-label">Image</label>
           <input
             type="text"
-            name="image[url]"
+            name="listing[image][url]"
             placeholder="enter image URL"
             class="form-control"
           />
@@ -49,8 +48,8 @@
           <div class="mb-3 col-md-4">
             <label for="price" class="form-label">Price</label>
             <input
-              type="listing[number]"
-              name="price"
+              type="number"
+              name="listing[price]"
               id=""
               placeholder="1200"
               class="form-control"
@@ -62,8 +61,8 @@
           <div class="mb-3 col-md-8">
             <label for="location" class="form-label">Location</label>
             <input
-              type="listing[text]"
-              name="location"
+              type="text"
+              name="listing[location]"
               id=""
               placeholder="Jaipur, Rajasthan"
               class="form-control"
@@ -76,8 +75,8 @@
         <div class="mb-3">
           <label for="country" class="form-label">Country</label>
           <input
-            type="listing[text]"
-            name="country"
+            type="text"
+            name="listing[country]"
             id=""
             placeholder="India"
             class="form-control"

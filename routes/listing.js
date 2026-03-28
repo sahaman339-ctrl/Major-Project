@@ -44,7 +44,7 @@ router.post(
   validateListing,
   wrapAsync(async (req, res, next) => {
     console.log(req.body);
-    let newListing = new Listing(req.body);
+    let newListing = new Listing(req.body.listing);
     // if (!newListing.title) {
     //   throw new ExpressError(400, "title is missing");
     // }
@@ -80,9 +80,10 @@ router.get(
 //Update Route
 router.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body });
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
   }),
 );
