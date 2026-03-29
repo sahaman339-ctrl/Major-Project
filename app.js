@@ -11,10 +11,13 @@ const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
 const session = require("express-session");
 const flash = require("connect-flash");
-const router = express.Router({ mergeParams: true });
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -53,8 +56,15 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
-// app.use(session(sessionOption));
-// app.use(flash());
+app.use(session(sessionOption));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get("/", (req, res, next) => {
   // next(new ExpressError(404, "Page not found!"));
@@ -62,13 +72,25 @@ app.get("/", (req, res, next) => {
   console.log(req.session);
 });
 
-// app.use((req, res, next) => {
-//   res.locals.success = req.flash("success");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  // console.log(success);
+  next();
+});
+
+app.get("/registerUser", async (req, res) => {
+  let fakeUser = new User({
+    email: "student@gmail.com",
+    username: "delta-student",
+  });
+  let newUser = await User.register(fakeUser, "helloworld");
+  res.send(newUser);
+});
 
 app.use("/", listings);
 app.use("/listings/:id/reviews", reviews);
+app.use("/", userRouter);
 
 // //Delete middleware for reviews
 // listingSchema.post("findOneAndDelete", async (listing) => {
