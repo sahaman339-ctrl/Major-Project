@@ -21,9 +21,9 @@ const userRouter = require("./routes/user.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 const sessionOption = {
@@ -69,12 +69,15 @@ passport.deserializeUser(User.deserializeUser());
 app.get("/", (req, res, next) => {
   // next(new ExpressError(404, "Page not found!"));
   res.send("Hi, I am root.");
-  console.log(req.session);
+  // console.log(req.session);
 });
 
 app.use((req, res, next) => {
+  // console.log(req.session);
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  // console.log(req.session.flash);
   // console.log(success);
   next();
 });
