@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const ExpressError = require("../utils/ExpressError");
 
 module.exports.index = async (req, res) => {
   const allListings = await Listing.find({});
@@ -74,7 +75,7 @@ module.exports.updateListing = async (req, res) => {
 module.exports.destoryListing = async (req, res) => {
   let { id } = req.params;
   let deletedListing = await Listing.findByIdAndDelete(id);
-  // console.log(deletedListing);
+  console.log(deletedListing);
   req.flash("success", "Listing Deleted Successfully!");
   res.redirect("/listings");
 };

@@ -5,6 +5,7 @@ const Listing = require("../models/listing.js");
 const { listingSchema, reviewSchema } = require("../schema.js");
 const Review = require("../models/review.js");
 const { isLoggedIn, isAuthor } = require("../middleware.js");
+const ExpressError = require("../utils/ExpressError.js");
 
 const reviewController = require("../controllers/reviews.js");
 
