@@ -14,6 +14,7 @@ const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -30,7 +31,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
+const dbUrl = process.env.ATLAS_URL;
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: "mysupersecretcode",
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) => {
+  console.log("ERROR ON MONGO SESSION STORE", err);
+});
+
 const sessionOption = {
+  store,
   secret: "mysupersecretcode",
   resave: false,
   saveUninitialized: true,
@@ -47,7 +63,7 @@ app.listen(8080, () => {
   // console.log(app);
 });
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust";
 main()
   .then(() => {
     console.log("connected to DB");
@@ -57,7 +73,8 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  // await mongoose.connect(MONGO_URL);
+  await mongoose.connect(dbUrl);
 }
 
 app.use(session(sessionOption));
@@ -70,11 +87,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/", (req, res, next) => {
-  // next(new ExpressError(404, "Page not found!"));
-  res.send("Hi, I am root.");
-  // console.log(req.session);
-});
+// app.get("/", (req, res, next) => {
+//   // next(new ExpressError(404, "Page not found!"));
+//   res.send("Hi, I am root.");
+//   // console.log(req.session);
+// });
 
 app.use((req, res, next) => {
   // console.log(passport);
