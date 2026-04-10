@@ -31,23 +31,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
-const dbUrl = process.env.ATLAS_URL;
+// const store = MongoStore.create({
+//   mongoUrl: dbUrl,
+//   crypto: {
+//     secret:process.env.SECRET,
+//   },
+//   touchAfter: 24 * 3600,
+// });
 
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  crypto: {
-    secret: "mysupersecretcode",
-  },
-  touchAfter: 24 * 3600,
-});
-
-store.on("error", (err) => {
-  console.log("ERROR ON MONGO SESSION STORE", err);
-});
+// store.on("error", (err) => {
+//   console.log("ERROR ON MONGO SESSION STORE", err);
+// });
 
 const sessionOption = {
-  store,
-  secret: "mysupersecretcode",
+  // store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -63,7 +61,8 @@ app.listen(8080, () => {
   // console.log(app);
 });
 
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust";
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust";
+// const dbUrl = process.env.ATLAS_URL;
 main()
   .then(() => {
     console.log("connected to DB");
@@ -73,8 +72,8 @@ main()
   });
 
 async function main() {
-  // await mongoose.connect(MONGO_URL);
-  await mongoose.connect(dbUrl);
+  await mongoose.connect(MONGO_URL);
+  // await mongoose.connect(dbUrl);
 }
 
 app.use(session(sessionOption));

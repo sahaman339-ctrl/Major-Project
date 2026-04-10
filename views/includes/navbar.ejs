@@ -47,11 +47,13 @@
       
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currUser) {%>
+        
+        <% const user = (typeof currUser !== "undefined") ? currUser : null; %>
+        <% if(!user) {%>
           <a class="nav-link" aria-current="page" href="/signup"><b>Sign Up</b></a>
           <a class="nav-link" href="/login"><b>Logged In</b></a>
         <% } %>
-        <% if(currUser) {%>
+        <% if(user) {%>
           <a class="nav-link" href="/logout"><b>Log Out</b></a>
         <% } %>
 
